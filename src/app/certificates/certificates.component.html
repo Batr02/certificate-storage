@@ -1,0 +1,47 @@
+<div class="container">
+   <div class="left-panel">
+     <div class="add-file-container">
+       <label class="file-input-label" for="fileInput">Додати</label>
+       <input type="file" #fileInput id="fileInput" (change)="handleFileInput($event)" hidden />
+     </div>
+     <ul class="certificates-list">
+       <li 
+           *ngFor="let cert of certificates" 
+           (click)="selectCertificate(cert)"
+           [class.selected]="selectedCertificate === cert"
+           >
+         {{ cert.commonName }}
+       </li>
+       <p class="noCertificate" *ngIf="certificates.length === 0">Наразі немає сертифікатів</p>
+     </ul>
+ 
+     <button class="clear-button" (click)="clear()">Очистити сертифікати</button>
+   </div>
+ 
+   <div class="right-panel">
+     <div 
+         *ngIf="!selectedCertificate" class="file-drop-area"
+         (dragover)="onDragOver($event)"
+         (drop)="onDrop($event)"
+         (dragleave)="onDragLeave($event)"
+         [class.drag-over]="isDragOver"
+         >
+       Перетягніть файли сюди або 
+       <label class="file-input-label" for="fileInputSecondary">Виберіть файл</label>
+       <input type="file" #fileInputSecondary id="fileInputSecondary" (change)="handleFileInput($event)" hidden />
+     </div>
+ 
+     <div *ngIf="selectedCertificate" class="certificate-details">
+       <h3>Деталі сертифіката:</h3>
+       <p><span class="detail-title">Common Name:</span>  {{ selectedCertificate.commonName }}</p>
+       <p><span class="detail-title">Issuer Name:</span>  {{ selectedCertificate.issuerName }}</p>
+       <p><span class="detail-title">Valid From:</span>  {{ selectedCertificate.validFrom | date:'yyyy-MM-dd' }}</p>
+       <p><span class="detail-title">Valid To:</span>  {{ selectedCertificate.validTo | date:'yyyy-MM-dd' }}</p>
+       <button class="back-button" (click)="deselectCertificate()">Назад</button>
+     </div>
+   </div>
+ </div>
+ 
+ 
+ 
+ 
